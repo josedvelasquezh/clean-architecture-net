@@ -8,17 +8,33 @@ StreamerDbContext dbContext = new();
 //QueryStreaming();
 //await QueryFilter();
 //await QueryMethods();
-await QueryLinq();
+//await QueryLinq();
+await TrackingAndNotTracking();
 
 Console.WriteLine("Presione cualquier tecla para terminar el programa");
 Console.ReadKey();
 
 
+async Task TrackingAndNotTracking()
+{
+    Streamer? streameWithTracking = await dbContext!.Streamers!.FirstOrDefaultAsync(x => x.Id == 1);
+    Streamer? streameWithNotTracking = await dbContext!.Streamers!.AsNoTracking().FirstOrDefaultAsync(x => x.Id == 2);
+
+    streameWithTracking.Name = "Netflix Supers";
+    streameWithNotTracking.Name = "Amazon Plus";
+
+    await dbContext!.SaveChangesAsync();
+}
+
 async Task QueryLinq()
 {
-    List<Streamer> streamers = await (from i in dbContext.Streamers select i).ToListAsync();
+    Console.WriteLine("Escribe nombre");
+    string? streamerName = Console.ReadLine();
 
-    foreach (var streamer in streamers)
+    //List<Streamer> streamers = await (from i in dbContext.Streamers select i).ToListAsync();
+    List<Streamer> streamers = await (from i in dbContext.Streamers where EF.Functions.Like(i.Name, $"%{streamerName}%") select i).ToListAsync();
+
+    foreach (Streamer streamer in streamers)
     {
         Console.WriteLine($"{streamer.Id} - {streamer.Name}");
     }

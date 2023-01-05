@@ -7,3 +7,8 @@ docker run --name=mssql-cleanarquitecture -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Que
 add-migration MigrationInicial
 
 update-database
+
+
+
+add-migration agregar-tablas-entidades-relaciones
+update-database
