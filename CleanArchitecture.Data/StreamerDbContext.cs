@@ -25,7 +25,7 @@ namespace CleanArchitecture.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Video>()
-                .HasMany(p => p.Actors)
+                .HasMany(p => p.Actores)
                 .WithMany(p => p.Videos)
                 .UsingEntity<VideoActor>(pt => pt.HasKey(e => new { e.ActorId, e.VideoId }));
         }
@@ -33,5 +33,9 @@ namespace CleanArchitecture.Data
         public DbSet<Streamer>? Streamers { get; set; }
 
         public DbSet<Video>? Videos { get; set; }
+
+        public DbSet<Actor>? Actores { get; set; }
+
+        public DbSet<Director>? Directores { get; set; }
     }
 }

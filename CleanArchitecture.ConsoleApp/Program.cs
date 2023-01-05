@@ -9,10 +9,104 @@ StreamerDbContext dbContext = new();
 //await QueryFilter();
 //await QueryMethods();
 //await QueryLinq();
-await TrackingAndNotTracking();
+//await TrackingAndNotTracking();
+//await AddNewStreamerWithVideo();
+//await AddNewStreamerWithideoId();
+//await AddNewActorWithVideo();
+//await AddNewDirectorWithVideo();
+await MultipleEntitiesQuery();
 
 Console.WriteLine("Presione cualquier tecla para terminar el programa");
 Console.ReadKey();
+
+async Task MultipleEntitiesQuery()
+{
+    Video? videoWithActores = await dbContext!.Videos!.Include(q => q.Actores).FirstOrDefaultAsync(q => q.Id == 1);
+
+    List<string?> actor = await dbContext.Actores.Select(q => q.Name).ToListAsync();
+
+    var videoWithDirector = await dbContext!.Videos!
+                            .Where(q => q.Director != null)
+                            .Include(q => q.Director)
+                            .Select(q =>
+                               new
+                               {
+                                   Director_Nombre_Completo = $"{q.Director.Name} {q.Director.LastName}",
+                                   Movie = q.Name
+                               }
+                             )
+                            .ToListAsync();
+
+}
+
+
+async Task AddNewDirectorWithVideo()
+{
+
+    Director director = new Director
+    {
+        Name = "Lorenzo",
+        LastName = "Basteri",
+        VideoId = 1
+    };
+
+    await dbContext.AddAsync(director);
+    await dbContext.SaveChangesAsync();
+}
+
+async Task AddNewActorWithVideo()
+{
+    Actor actor = new Actor
+    {
+        Name = "Brad",
+        LastName = "Pitt"
+    };
+
+    await dbContext.AddAsync(actor);
+    await dbContext.SaveChangesAsync();
+
+    VideoActor videoActor = new VideoActor
+    {
+        ActorId = actor.Id,
+        VideoId = 1
+    };
+
+    await dbContext.AddAsync(videoActor);
+    await dbContext.SaveChangesAsync();
+}
+
+async Task AddNewStreamerWithideoId()
+{
+
+    Video movie = new Video
+    {
+        Name = "Batman Forever",
+        StreamerId = 1002
+    };
+
+    await dbContext.AddAsync(movie);
+    await dbContext.SaveChangesAsync();
+}
+
+
+async Task AddNewStreamerWithVideo()
+{
+
+    Streamer streamer = new Streamer
+    {
+        Name = "HBO",
+        Url = "http://hbo.com"
+    };
+
+    Video movie = new Video
+    {
+        Name = "Juegos del Hambre",
+        Streamer = streamer
+    };
+
+    await dbContext.AddAsync(movie);
+    await dbContext.SaveChangesAsync();
+}
 
 
 async Task TrackingAndNotTracking()

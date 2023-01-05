@@ -6,7 +6,7 @@ namespace CleanArchitecture.Domain
     {
         public Video()
         {
-            Actors = new HashSet<Actor>();
+            Actores = new HashSet<Actor>();
         }
 
         public string? Name { get; set; }
@@ -15,7 +15,7 @@ namespace CleanArchitecture.Domain
 
         public virtual Streamer? Streamer { get; set; }
 
-        public virtual ICollection<Actor> Actors { get; set; }
+        public virtual ICollection<Actor> Actores { get; set; }
 
         public virtual Director Director { get; set; }
     }

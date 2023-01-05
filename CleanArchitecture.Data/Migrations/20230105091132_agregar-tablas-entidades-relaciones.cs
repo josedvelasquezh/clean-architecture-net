@@ -27,7 +27,7 @@ namespace CleanArchitecture.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Director",
+                name: "Directores",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -38,9 +38,9 @@ namespace CleanArchitecture.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Director", x => x.Id);
+                    table.PrimaryKey("PK_Directores", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Director_Videos_VideoId",
+                        name: "FK_Directores_Videos_VideoId",
                         column: x => x.VideoId,
                         principalTable: "Videos",
                         principalColumn: "Id",
