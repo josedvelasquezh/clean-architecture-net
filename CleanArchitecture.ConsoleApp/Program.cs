@@ -6,10 +6,45 @@ StreamerDbContext dbContext = new();
 
 //await AddNewRecords();
 //QueryStreaming();
-await QueryFilter();
+//await QueryFilter();
+//await QueryMethods();
+await QueryLinq();
 
 Console.WriteLine("Presione cualquier tecla para terminar el programa");
 Console.ReadKey();
+
+
+async Task QueryLinq()
+{
+    List<Streamer> streamers = await (from i in dbContext.Streamers select i).ToListAsync();
+
+    foreach (var streamer in streamers)
+    {
+        Console.WriteLine($"{streamer.Id} - {streamer.Name}");
+    }
+}
+
+async Task QueryMethods()
+{
+    DbSet<Streamer> streamer = dbContext!.Streamers!;
+
+    Streamer firstAsync = await streamer.Where(x => x.Name.Contains("a")).FirstAsync();
+
+    Streamer? firstOrDefaultAsync = await streamer.Where(x => x.Name.Contains("a")).FirstOrDefaultAsync();
+
+    Streamer? FirstOrDefaultAsyncV2 = await streamer.FirstOrDefaultAsync(x => x.Name.Contains("a"));
+
+    Streamer singleAsync = await streamer.Where(x => x.Id == 1).SingleAsync();
+
+    Streamer? singleOrDefaultAsync = await streamer.Where(x => x.Id == 1).SingleOrDefaultAsync();
+
+    Streamer? findAsync = await streamer.FindAsync(1);
+
+    int count = await streamer.CountAsync();
+    long longCount = await streamer.LongCountAsync();
+    Streamer min = await streamer.MinAsync();
+    Streamer max = await streamer.MaxAsync();
+}
 
 async Task QueryFilter()
 {
