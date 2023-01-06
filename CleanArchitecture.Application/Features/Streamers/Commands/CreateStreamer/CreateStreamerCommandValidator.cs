@@ -7,12 +7,12 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands.CreateStream
         public CreateStreamerCommandValidator()
         {
             RuleFor(p => p.Name)
-                .NotEmpty()
-                .NotNull()
-                .MaximumLength(50);
+                .NotEmpty().WithMessage("{Name} no puede estar vacio")
+                .NotNull().WithMessage("{Name} no puede ser null")
+                .MaximumLength(50).WithMessage("{Name} maximo 50");
 
             RuleFor(p => p.Url)
-                .NotEmpty();
+                .NotEmpty().WithMessage("{Url} no puede estar vacio");
         }
     }
 }
